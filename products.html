@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Products - NCC MART</title>
+  <style>
+    body { font-family: Arial; margin: 0; background: #f4f4f4; }
+    header, footer { background: #2c3e50; color: white; text-align: center; padding: 15px; }
+    nav { background: #34495e; text-align: center; padding: 10px; }
+    nav a { color: white; margin: 10px; text-decoration: none; font-weight: bold; }
+    .product-container { display: flex; flex-wrap: wrap; justify-content: center; padding: 20px; }
+    .product-card {
+      background: white;
+      border: 1px solid #ccc;
+      margin: 10px;
+      padding: 15px;
+      width: 200px;
+      text-align: center;
+      border-radius: 8px;
+    }
+    .product-card img { width: 100%; height: 150px; object-fit: cover; }
+    .product-card button {
+      background: #27ae60;
+      color: white;
+      border: none;
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Products - NCC MART</h1>
+</header>
+
+<nav>
+  <a href="index.html">Home</a>
+  <a href="products.html">Shop Now</a>
+  <a href="cart.html">Cart</a>
+  <a href="login.html">Logout</a>
+</nav>
+
+<div class="product-container">
+  <div class="product-card">
+    <img src="https://bureauofncc.com/wp-content/uploads/2024/02/7-2.jpg" alt="PRODUCT 1" width="300" height="180">
+    <h3>OFFICER BELT</h3>
+    <p>₹350</p>
+    <button onclick="addToCart('OFFICER BELT', 350);">Add to Cart</button>
+  </div>
+
+  <div class="product-card">
+    <img src="https://rukminim2.flixcart.com/image/300/300/kd1zngw0-0/shoe/h/0/q/army-dms-boots-6-para-commando-black-original-imafuyv64xrm6ptj.jpeg" alt="PRODUCT 1" width="300" height="180">
+    <h3>BOOTS</h3>
+    <p>₹1,250</p>
+    <button onclick="addToCart('BOOTS', 1250);">Add to Cart</button>
+  </div>
+
+  <div class="product-card">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReXrF8Db5dJT-S_92Mn2MVm1iYN7LsYJvb5A&s" alt="PRODUCT 1" width="300" height="180">
+    <h3>NCC BADGE</h3>
+    <p>₹150</p>
+    <button onclick="addToCart('NCC BADGES', 150);">Add to Cart</button>
+  </div>
+</div>
+
+<div class="product" data-name="ncc shoes">
+
+<script>
+  function addToCart(name, price) {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    let existing = cart.find(item => item.name === name);
+    if (existing) {
+      existing.quantity++;
+    } else {
+      cart.push({ name, price, quantity: 1 });
+    }
+    localStorage.setItem('cart', JSON.stringify(cart));
+    alert(`${name} added to cart`);
+  }
+</script>
+
+
+<script>
+  function addToCart(product, price) {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    cart.push({ product, price });
+    localStorage.setItem('cart', JSON.stringify(cart));
+    alert(product + " added to cart!");
+  }
+
+  function searchProducts(inputText = "") {
+    const input = inputText.toLowerCase();
+    const products = document.querySelectorAll(".product");
+
+    products.forEach(p => {
+      const name = p.getAttribute("data-name");
+      if (name.includes(input)) {
+        p.style.display = "inline-block";
+      } else {
+        p.style.display = "none";
+      }
+    });
+  }
+
+  // Check if search text is passed from URL
+  window.onload = function () {
+    const params = new URLSearchParams(window.location.search);
+    const search = params.get("search");
+    if (search) {
+      document.getElementById("searchInput").value = search;
+      searchProducts(search);
+    }
+  }
+</script>
+
+<script>
+function addToCart(name, price) {
+  const cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+  const existingItem = cart.find(item => item.name === name);
+  if (existingItem) {
+    existingItem.quantity += 1;
+  } else {
+    cart.push({
+      name: name,
+      price: Number(price), // 🔐 Make sure it's a number
+      quantity: 1
+    });
+  }
+
+  localStorage.setItem('cart', JSON.stringify(cart));
+  alert(`${name} added to cart!`);
+}
+</script>
+
+
+
+
+<!-- Search Bar in products.html -->
+<div style="text-align:center; margin: 20px;">
+  <input type="text" id="homeSearch" placeholder="Search products..." style="padding: 10px; width: 250px;">
+  <button onclick="searchFromHome()" style="padding: 10px;">Search</button>
+</div>
+
+<script>
+  function searchFromHome() {
+    const searchText = document.getElementById('homeSearch').value;
+    if (searchText.trim() !== "") {
+      // Redirect to products.html with search text in URL
+      window.location.href = `products.html?search=${encodeURIComponent(searchText)}`;
+    } else {
+      alert("Please enter a product to search.");
+    }
+  }
+</script>
+
+<footer>
+  &copy;  NCC MART. All rights reserved.
+</footer>
+
+</body>
+</html>

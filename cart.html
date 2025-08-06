@@ -1,0 +1,111 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Your Cart - NCC MART</title>
+  <style>
+    body { font-family: Arial; background: #f4f4f4; margin: 0; }
+    header, footer { background: #2c3e50; color: white; text-align: center; padding: 15px; }
+    nav { background: #34495e; padding: 10px; text-align: center; }
+    nav a { color: white; margin: 10px; text-decoration: none; font-weight: bold; }
+    main { padding: 20px; }
+    .cart-item {
+      background: white;
+      padding: 15px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    button {
+      background: red;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>🛒 Your Cart - NCC MART</h1>
+</header>
+
+<nav>
+  <a href="index.html">Home</a>
+  <a href="products.html">Products</a>
+  <a href="cart.html">Cart</a>
+  <a href="login.html">Logout</a>
+</nav>
+
+<main>
+  <div id="cartItems"></div>
+  <h3 id="totalPrice"></h3>
+</main>
+
+<script>
+  const cart = JSON.parse(localStorage.getItem('cart')) || [];
+  const cartDiv = document.getElementById('cartItems');
+  const totalPrice = document.getElementById('totalPrice');
+
+  function renderCart() {
+    cartDiv.innerHTML = '';
+    let total = 0;
+
+    if (cart.length === 0) {
+      cartDiv.innerHTML = "<p>Your cart is empty.</p>";
+      return;
+    }
+
+    cart.forEach((item, index) => {
+      total += item.price * item.quantity;
+      const itemDiv = document.createElement('div');
+      itemDiv.className = 'cart-item';
+      itemDiv.innerHTML = `
+        <strong>${item.name}</strong> - ₹${item.price} × ${item.quantity}
+        <br>
+        <button onclick="removeItem(${index})">Remove</button>
+      `;
+      cartDiv.appendChild(itemDiv);
+    });
+
+    totalPrice.textContent = "Total Price: ₹" + total;
+  }
+
+  function removeItem(index) {
+    cart.splice(index, 1);
+    localStorage.setItem('cart', JSON.stringify(cart));
+    renderCart();
+  }
+
+  renderCart();
+</script>
+
+
+<div class="total" id="totalPrice"></div>
+
+<div style="text-align:center; margin: 20px;">
+  <button onclick="placeOrder()" style="padding: 10px 20px; font-size: 16px; background: green; color: white; border: none; border-radius: 5px;">
+    Order Now
+  </button>
+</div>
+
+<script>
+function placeOrder() {
+  if (cart.length === 0) {
+    alert("Cart is empty! Add items to order.");
+  } else {
+    localStorage.removeItem("cart");
+    alert("🎉 Your order has been placed successfully!");
+    window.location.href = "index.html"; // Redirect to home
+  }
+}
+</script>
+
+<footer>
+  &copy;  NCC MART. All rights reserved.
+</footer>
+
+</body>
+</html>
